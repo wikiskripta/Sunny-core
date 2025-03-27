@@ -1,5 +1,5 @@
 throttle.ctrl
-user-*.py
+user-password.py
 *.bak
 *.lwp
 *.pyc
@@ -10,7 +10,8 @@ user-*.py
 /*.egg
 /data*
 /category*
-families/
+families/*wikiskripta*
+!/families/
 logs*
 *apicache*
 *pycache*
