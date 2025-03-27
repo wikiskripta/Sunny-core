@@ -1,0 +1,24 @@
+0) Zkontroluj, zda existuje druhý soubor a pokud ano, smaž ze souboru s frontou tolik řádků, jaké je ve druhém souboru číslo (seek, writelines, truncate)
+1) Spustit plniče front
+2) Načíst změny od času A do současnosti z API
+3) Načíst existující frontu, spojit s načtenými změnami a unikátní set uložit do fronty
+4) Spustit zpracovávače front
+5) Načíst frontu
+6) Po zpracování každého článku aktualizovat číslo v souboru pojmenovaném stejně jako soubor s frontou ale s jinou příponou, číslo říká, kolik řádků z fronty bylo zpracováno ale ještě nebylo odstraněno
+7) Smaž z paměti zpracované řádky (ideálně všechny) a ulož zbytek zpět do fronty, vynuluj i číslo v druhém souboru (viz bod 6)
+
+
+
+# Dashboard update
+
+- Nějaký loop skript co se bude pouštět každou chvíli (asi jednou za pět minut)
+- Bude brát jeden task za druhým, zkontroluje, zda je zapnutý, a kdy byl naposledy spuštěn
+- Pokud má task být spuštěn, je jeho provedení přidáno do nějaké fronty a zároveň je jeho status nastaven na "queued"
+- O tasky ve frontě se bude starat nějaký démon, který změní status tasku ve frontě na "running" a po dokončení na "inactive" a změní datum posledního provedení
+- Loop skript nebude do fronty znovu řadit tasky, které mají status jiný, než "inactive"
+- Datum posledního spuštění a status tasku se bude ukládat do nějakého runtime textového souboru
+- Tasky budou v jednotlivých složkách, každý z nich bude mít "fillQueue.py" a "processQueue.py" soubor, následně i runtime soubor
+- Logy se budou zapisovat do BotLog/Tasks/TASK_ID/YYYY-MM-DD_hh:mm:ss.log, chyby poté zvlášť ještě do BotLog/Tasks/TASK_ID/Errors.tsv
+- Z error logu půjdou jednotlivé záznamy mazat (souborová databáze), z normálního ne
+- Bude existovat speciální task, který se bude pouštět jednou denně a bude buďto komprimovat (gz) nebo mazat logy starší než 1 týden
+- Procedury budou rovnou vracet výstup do PHP ke zobrazení spouštěči/uživateli, logovat se bude jejich spuštění (čas, procedura, uživatel), tyto logy se asi nebudou mazat/komprimovat
